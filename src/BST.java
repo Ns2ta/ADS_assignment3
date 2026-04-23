@@ -44,7 +44,7 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public V get(K key) {
-        if (root == null) return;
+        //if (root == null) return;
 
         Node current = root;
         while (current != null) {
@@ -81,7 +81,7 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public Iterable<K> iterator() {
-        //
+        return null;
     }
 
     public int size() {
@@ -92,3 +92,10 @@ public class BST<K extends Comparable<K>, V> {
 //Add size
 //2) Implement in-order traversal for iterator()
 //3) Make it possible for both key and value to be accessible during the iteration
+
+// public void inOrder (Node root) {
+//      if (root == null) return;
+//      inOrder(root.left);
+//      System.out.println(root.data + " ");
+//      inOrder(root.right);
+// }

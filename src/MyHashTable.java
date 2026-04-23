@@ -13,6 +13,7 @@ public class MyHashTable <K, V> {
         public String toString() {
             return "{" + key + " " + value + "}";
         }
+    }
 
         private HashNode<K, V>[] chainArray;
         private int M = 11; //default number of chains
@@ -22,16 +23,15 @@ public class MyHashTable <K, V> {
 
         public MyHashTable(int M) {}
 
-        private int hash(K key) {}
+        private int hash(K key) {return 0;}
 
-        public void put(K key, V value) {}
+        public void put(K key, V value) {return;}
 
-        public V get(K key) {}
+        public V get(K key) {return null;}
 
-        public V remove (K key) {}
+        public V remove (K key) {return null;}
 
-        public boolean contains(V value) {}
+        public boolean contains(V value) {return false;}
 
-        public K getKey(V value) {}
-    }
+        public K getKey(V value) {return null;}
 }
