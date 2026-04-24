@@ -16,22 +16,132 @@ public class MyHashTable <K, V> {
     }
 
         private HashNode<K, V>[] chainArray;
-        private int M = 11; //default number of chains
+        private int M = 11;
         private int size;
 
-        public MyHashTable() {}
+        private void rehash(int newM) {
+            HashNode<K, V>[] oldArray = chainArray;
 
-        public MyHashTable(int M) {}
+            chainArray = (HashNode<K, V>[]) new HashNode[newM];
+            int oldM = M;
+            M = newM;
 
-        private int hash(K key) {return 0;}
+            size = 0;
 
-        public void put(K key, V value) {return;}
+            for (int i = 0; i < oldM; i++) {
+                for (HashNode<K, V> node = oldArray[i]; node!= null; node = node.next) {
+                    putInternal(node.key, node.value);
+                }
+            }
+        }
 
-        public V get(K key) {return null;}
+        public MyHashTable() {
+            this.M = 11;
+            chainArray = (HashNode<K, V>[]) new HashNode[M];
+        }
 
-        public V remove (K key) {return null;}
+        public MyHashTable(int M) {
+            this.M = M;
+            chainArray = (HashNode<K, V>[]) new HashNode[M];
+        }
 
-        public boolean contains(V value) {return false;}
+        private int hash(K key) {
+            return (key.hashCode() & Integer.MAX_VALUE) % M;
+        }
 
-        public K getKey(V value) {return null;}
+        private void putInternal(K key, V value) {
+            int index = hash(key);
+
+            HashNode<K, V> head = chainArray[index];
+
+            for (HashNode<K, V> node = head; node!= null; node = node.next) {
+                if (node.key.equals(key)) {
+                    node.value = value;
+                    return;
+                }
+            }
+
+            HashNode<K, V> newNode = new HashNode<>(key, value);
+            newNode.next = head;
+            chainArray[index] = newNode;
+
+            size++;
+        }
+
+        public void put(K key, V value) {
+            if (value == null) throw new NullPointerException();
+            if (key == null) throw new NullPointerException();
+
+            if ((double)(size + 1) / M >= 0.75) {
+                rehash(2 * M);
+            }
+
+            putInternal(key, value);
+        }
+
+        public V get(K key) {
+            if (key == null) throw new NullPointerException();
+
+            int index = hash(key);
+
+            for (HashNode<K, V> node = chainArray[index]; node != null; node = node.next) {
+                if (node.key.equals(key)) {
+                    return node.value;
+                }
+            }
+
+            return null;
+        }
+
+        public V remove (K key) {
+            if (key == null) throw new NullPointerException();
+
+            int index = hash(key);
+
+            HashNode<K, V> current = chainArray[index];
+            HashNode<K, V> prev = null;
+
+            while (current != null) {
+                if (current.key.equals(key)) {
+                    if (prev == null) {
+                        chainArray[index] = current.next;
+                    } else {
+                        prev.next = current.next;
+                    }
+                    size--;
+                    return current.value;
+                }
+
+                prev = current;
+                current = current.next;
+            }
+
+            return null;
+        }
+
+        public boolean contains(V value) {
+            if (value == null) throw new NullPointerException();
+
+            for (int i = 0; i < M; i++) {
+                for (HashNode<K, V> node = chainArray[i]; node != null; node = node.next) {
+                    if (node.value.equals(value)) return true;
+                }
+            }
+            return false;
+        }
+
+        public K getKey(V value) {
+            if (value == null) throw new NullPointerException();
+
+            for (int i = 0; i < M; i++) {
+                for (HashNode<K, V> node = chainArray[i]; node != null; node = node.next) {
+                    if (node.value.equals(value)) return node.key;
+                }
+            }
+            return null;
+        }
+
+        public int size() {
+            return size;
+        }
 }
