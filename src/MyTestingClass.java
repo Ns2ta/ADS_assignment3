@@ -10,10 +10,10 @@ class MyTestingClass {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MyTestingClass)) return false;
-        MyTestingClass other = (MyTestingClass) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof MyTestingClass)) return false;
+        MyTestingClass other = (MyTestingClass) obj;
         return a == other.a && b == other.b;
     }
 
