@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class BST<K extends Comparable<K>, V> {
 
     private Node root;
@@ -80,22 +82,41 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
-    public Iterable<K> iterator() {
-        return null;
+    public Iterable<?> iterator() {
+
+        class Entry {
+            private K key;
+            private V value;
+
+            Entry(K key, V value) {
+                this.key = key;
+                this.value = value;
+            }
+
+            public K getKey() { return key; }
+            public V getValue() { return value; }
+        }
+
+        List<Entry> result = new ArrayList<>();
+        Stack<Node> stack = new Stack<>();
+        Node current = root;
+
+        while (current != null || !stack.isEmpty()) {
+
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+
+            current = stack.pop();
+            result.add(new Entry(current.key, current.val));
+            current = current.right;
+        }
+
+        return result;
     }
 
     public int size() {
         return size;
     }
 }
-
-//Add size
-//2) Implement in-order traversal for iterator()
-//3) Make it possible for both key and value to be accessible during the iteration
-
-// public void inOrder (Node root) {
-//      if (root == null) return;
-//      inOrder(root.left);
-//      System.out.println(root.data + " ");
-//      inOrder(root.right);
-// }
