@@ -1,21 +1,26 @@
+import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         BST<Integer, String> bst = new BST<>();
-
-        MyHashTable<String, Integer> table = new MyHashTable<>();
-
-        table.put("hello", 1);
-        table.put("bye", 2);
-        table.put("hello", 3);
-
-        System.out.println(table.get("hello"));
-        System.out.println(table.get("bye"));
-
         bst.put(1, "A");
         bst.put(2, "B");
         bst.put(5, "D");
         bst.put(3, "C");
 
         System.out.println(bst.get(1) + " " + bst.get(5));
+
+        MyHashTable<MyTestingClass, Integer> table = new MyHashTable<>(101);
+
+        Random rand = new Random();
+
+        for (int i = 0; i < 10000; i++) {
+            int a = rand.nextInt(1000);
+            int b = rand.nextInt(1000);
+
+            table.put(new MyTestingClass(a, b), i);
+        }
+
+        System.out.println("Size: " + table.size());
+        table.printBucketStats();
     }
 }

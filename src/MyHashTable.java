@@ -73,7 +73,7 @@ public class MyHashTable <K, V> {
             if (key == null) throw new NullPointerException();
 
             if ((double)(size + 1) / M >= 0.75) {
-                rehash(2 * M);
+                rehash(2 * M + 1);
             }
 
             putInternal(key, value);
@@ -144,4 +144,30 @@ public class MyHashTable <K, V> {
         public int size() {
             return size;
         }
+
+    public void printBucketStats() {
+        int max = 0;
+        int min = Integer.MAX_VALUE;
+        int nonEmpty = 0;
+
+        for (int i = 0; i < M; i++) {
+            int count = 0;
+
+            for (HashNode<K, V> node = chainArray[i]; node != null; node = node.next) {
+                count++;
+            }
+
+            if (count > 0) nonEmpty++;
+            max = Math.max(max, count);
+            min = Math.min(min, count);
+
+            System.out.println("Bucket " + i + ": " + count);
+        }
+
+        System.out.println();
+        System.out.println("Number of buckets: " + M);
+        System.out.println("Non-empty buckets: " + nonEmpty);
+        System.out.println("Max chain: " + max);
+        System.out.println("Min chain: " + min);
+    }
 }
